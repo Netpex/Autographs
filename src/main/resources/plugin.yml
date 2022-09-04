@@ -1,0 +1,9 @@
+name: Autographs
+version: '${project.version}'
+main: info.netpex.autographs.Autographs
+api-version: 1.19
+authors: [ Netpex ]
+commands:
+  autographs:
+    description:  Label for all commands under autographs.
+    aliases: [ag]
