@@ -62,7 +62,6 @@ public class Config extends JavaPlugin {
                 val = val.getConfigurationSection(arg);
             }
         }
-
         return val.getBoolean(value);
     }
 }

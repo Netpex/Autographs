@@ -3,6 +3,10 @@ version: '${project.version}'
 main: info.netpex.autographs.Autographs
 api-version: 1.19
 authors: [ Netpex ]
+softdepend:
+  - HeadDatabase
+depend:
+  - PlaceholderAPI
 commands:
   autographs:
     description:  Label for all commands under autographs.

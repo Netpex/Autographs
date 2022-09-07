@@ -4,6 +4,7 @@ import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
+import info.netpex.autographs.frames.Costumes;
 import info.netpex.autographs.utility.Config;
 import info.netpex.autographs.utility.Items;
 import info.netpex.autographs.utility.PersistentData;
@@ -52,45 +53,7 @@ public class Commands implements CommandExecutor {
                         player.sendMessage(Placeholders.translate(player, "%prefix% Data retrieved for " + player.getName() + ": " + PersistentData.get(player, "Costume")));
                     }
                 } else if (args[0].equalsIgnoreCase("costumes")) {
-                    ChestGui gui = new ChestGui(6, "Costumes");
-                    PaginatedPane pages = new PaginatedPane(0, 0, 9, 5);
-                    pages.populateWithItemStacks(Arrays.asList(
-                            new ItemStack(Material.GOLDEN_SWORD),
-                            new ItemStack(Material.LIGHT_GRAY_GLAZED_TERRACOTTA, 16),
-                            new ItemStack(Material.COOKED_COD, 64)
-                    ));
-                    pages.setOnClick(event -> {
-                        //buy item
-                    });
-
-                    gui.addPane(pages);
-
-                    StaticPane a = new StaticPane(Config.getInt("x", "gui_costumes_left-arrow"), Config.getInt("y", "gui_costumes_left-arrow"), 1, 1);
-                    StaticPane b = new StaticPane(Config.getInt("x", "gui_costumes_right-arrow"), Config.getInt("y", "gui_costumes_right-arrow"), 1, 1);
-                    StaticPane c = new StaticPane(Config.getInt("x", "gui_costumes_back-arrow"), Config.getInt("y", "gui_costumes_back-arrow"), 1, 1);
-                    StaticPane d = new StaticPane(Config.getInt("x", "gui_costumes-"), Config.getInt("y", "gui_costumes"), 1, 1);
-                    a.addItem(new GuiItem(Items.guiItem(player, "gui_costumes_left-arrow"),event -> {
-                        if (pages.getPage() > 0) {
-                            pages.setPage(pages.getPage() - 1);
-
-                            gui.update();
-                        }
-                    }), 0,0);
-
-                    b.addItem(new GuiItem(Items.guiItem(player, "gui_costumes_right-arrow"), event -> {
-                        if (pages.getPage() < pages.getPages() - 1) {
-                            pages.setPage(pages.getPage() + 1);
-
-                            gui.update();
-                        }
-                    }), 0,0);
-
-                    c.addItem(new GuiItem(Items.guiItem(player, "gui_costumes_back-arrow"), event ->
-                            event.getWhoClicked().closeInventory()), 0,0);
-                    gui.addPane(a);
-                    gui.addPane(b);
-                    gui.addPane(c);
-
+                    ChestGui gui = Costumes.create(player);
                     gui.show(player);
                 }
                 return true;
