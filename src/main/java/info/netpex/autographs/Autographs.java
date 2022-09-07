@@ -18,21 +18,21 @@ public final class Autographs extends JavaPlugin {
 
 
     if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-        System.out.println(ChatColor.translateAlternateColorCodes('&', "&2PlaceholderAPI loaded!"));
+        getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&2PlaceholderAPI loaded!"));
     } else {
-        System.out.println(ChatColor.translateAlternateColorCodes('&', "&4Could not find PlaceholderAPI! This plugin is required."));
+        getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Could not find PlaceholderAPI! This plugin is required."));
         Bukkit.getPluginManager().disablePlugin(this);
     }
 
     if (Bukkit.getPluginManager().getPlugin("HeadDatabase") != null) {
-        System.out.println(ChatColor.translateAlternateColorCodes('&', "&2HeadDatabase loaded!"));
+        getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&2HeadDatabase loaded!"));
     } else {
-        System.out.println(ChatColor.translateAlternateColorCodes('&', "&6Could not find HeadDatabase! This plugin is high recommended."));
-        this.getConfig().set("options.userHeadDataBase", false);
+        getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&6Could not find HeadDatabase! This plugin is high recommended."));
+        this.getConfig().set("options.useHeadDataBase", false);
     }
 
-    this.saveDefaultConfig();
-      this.getCommand("autographs").setExecutor(new Commands());
+    this.saveConfig();
+    this.getCommand("autographs").setExecutor(new Commands());
 
       // listeners
         this.getServer().getPluginManager().registerEvents(new PlayerJoinEvent(), this);

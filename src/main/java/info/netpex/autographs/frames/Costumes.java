@@ -48,9 +48,13 @@ public class Costumes extends JavaPlugin {
         }
         pages.populateWithItemStacks(costumes);
         pages.setOnClick(event -> {
-            ChestGui Details = CostumeDetail.create(player, "costumes_"+event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Autographs.getPlugin(), "path"), PersistentDataType.STRING));
-            player.closeInventory();
-            Details.show(player);
+           if (event.isRightClick()) {
+               ChestGui Details = CostumeDetail.create(player, "costumes_"+event.getCurrentItem().getItemMeta().getPersistentDataContainer().get(new NamespacedKey(Autographs.getPlugin(), "path"), PersistentDataType.STRING));
+               player.closeInventory();
+               Details.show(player);
+           } else {
+
+           }
         });
 
         gui.addPane(pages);

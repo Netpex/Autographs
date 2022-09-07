@@ -41,12 +41,12 @@ public class Items extends JavaPlugin {
         } else {
             try {
                 if (PersistentData.isNumeric(Config.getString("gui-item", path))) {
-                    System.out.println(ChatColor.translateAlternateColorCodes('&', "&4Could not create head alternative. &6Double check &7'&9useHeadDataBase&7'&6 is true &7 to use numeric values."));
+                    Autographs.getPlugin().getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Could not create head alternative. &6Double check &7'&9useHeadDataBase&7'&6 is true &7to use numeric values."));
                     return null;
                 }
                 head = new ItemStack(Material.valueOf(Config.getString("gui-item", path)));
             } catch(Exception e) {
-                System.out.println(ChatColor.translateAlternateColorCodes('&', "&4Could not create head alternative."));
+                Autographs.getPlugin().getServer().getConsoleSender().sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Could not create head alternative."));
                 return null;
             }
         }
@@ -58,8 +58,8 @@ public class Items extends JavaPlugin {
         for (String s : Autographs.getPlugin().getConfig().getStringList(path.replace("_", ".")+".lore")) {
             lore.add(Placeholders.translate(player, s));
         }
-        lore.add("World: ");
-        lore.add(Placeholders.translate(player, Config.getString("title", "worlds_"+Config.getString("park", path))));
+        lore.add(Placeholders.translate(player, "&aLeft &6click &7to &3toggle&7."));
+        lore.add(Placeholders.translate(player, "&cRight &6click &7to &3inspect&7."));
         meta.setLore(lore);
         head.setItemMeta(meta);
 

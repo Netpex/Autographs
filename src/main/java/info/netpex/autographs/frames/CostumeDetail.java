@@ -9,6 +9,10 @@ import info.netpex.autographs.utility.Config;
 import info.netpex.autographs.utility.Items;
 import info.netpex.autographs.utility.Placeholders;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -72,7 +76,12 @@ public class CostumeDetail extends JavaPlugin {
         }), 2,4);
         details.addItem(new GuiItem(Items.guiItem(player, "worlds_" + Config.getString("park", path)), event -> event.setCancelled(true)), 5,1);
         details.addItem(new GuiItem(rename, event -> {
-
+            System.out.println(path.split("costumes_")[1]);
+            TextComponent msg = new TextComponent(Placeholders.translate(player, "&6Click &chere &7to &9rename &r"+Config.getString("name", path)+"&7!"));
+            msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Placeholders.translate(player, "&7/ag rename "+Config.getString("name", path)+" true <New name>")).create()));
+            msg.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, "/ag rename "+path.split("costumes_")[1]+" y <New name>"));
+            player.spigot().sendMessage(msg);
+            player.closeInventory();
         }), 5,2);
         details.addItem(new GuiItem(delete, event -> {
 
@@ -83,8 +92,11 @@ public class CostumeDetail extends JavaPlugin {
         StaticPane a = new StaticPane(Config.getInt("x", "gui_costumes_back-arrow_gui-position"), Config.getInt("y", "gui_costumes_back-arrow_gui-position"), 1, 1);
         StaticPane b = new StaticPane(Config.getInt("x", "gui_costumes_gui-position"), Config.getInt("y", "gui_costumes_gui-position"), 1, 1);
 
-        a.addItem(new GuiItem(Items.guiItem(player, "gui_costumes_back-arrow"), event ->
-                event.getWhoClicked().closeInventory()), 0,0);
+        a.addItem(new GuiItem(Items.guiItem(player, "gui_costumes_back-arrow"), event ->{
+            ChestGui g = Costumes.create(player);
+            player.closeInventory();
+            g.show(player);
+        }), 0,0);
 
         ItemStack hidden = new ItemStack(Material.valueOf(Config.getString("item", "gui_costumes")));
         ItemMeta meta = hidden.getItemMeta();

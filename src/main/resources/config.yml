@@ -84,9 +84,9 @@ gui:
         x: 0
         y: 5
       model-data: 4
-      title: "&5EXIT"
+      title: "&6Return"
       lore:
-        - "&6Click &7to &4Exit&7."
+        - "&6Click &7to &4Return&7."
   color-selector:
     custom-frame: true #If you aren't sure what this means make it false.
     item: "IRON_INGOT"
@@ -106,4 +106,4 @@ gui:
       model-data: 4
       title: "&6Return"
       lore:
-        - "&6Click &7to &4Exit&7/&2Save&7."
+        - "&6Click &7to &4Return&7/&2Save&7."
