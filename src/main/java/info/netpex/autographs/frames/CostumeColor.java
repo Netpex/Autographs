@@ -5,16 +5,14 @@ import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import com.github.stefvanschie.inventoryframework.pane.OutlinePane;
 import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import info.netpex.autographs.Autographs;
-import info.netpex.autographs.utility.Config;
 import info.netpex.autographs.utility.Items;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -28,13 +26,14 @@ public class CostumeColor extends JavaPlugin {
 
         ChestGui gui = new ChestGui(3, "Color Selector");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
+        Configuration config = Autographs.getPlugin().getConfig();
 
         List<Material> palette = new ArrayList<>();
-        StaticPane a = new StaticPane(Config.getInt("x", "gui_color-selector_back-arrow_gui-position"), Config.getInt("y", "gui_color-selector_back-arrow_gui-position"), 1, 1);
-        StaticPane b = new StaticPane(Config.getInt("x", "gui_color-selector_gui-position"), Config.getInt("y", "gui_color-selector_gui-position"), 1, 1);
+        StaticPane a =  new StaticPane(config.getInt("gui.costumes.back-arrow.gui-position.x"), config.getInt("gui.costumes.back-arrow.gui-position.y"), 1, 1);
+        StaticPane b = new StaticPane(config.getInt("gui.costumes.gui-position.x"), config.getInt("gui.costumes.gui-position.y"), 1, 1);
         StaticPane c = new StaticPane(0, 2, 1, 1);
         StaticPane d = new StaticPane(8, 2, 1, 1);
-        StaticPane e = new StaticPane(Config.getInt("x", "gui_color-selector_focus-item_gui-position"), Config.getInt("y", "gui_color-selector_focus-item_gui-position"), 1, 1);
+        StaticPane e = new StaticPane(config.getInt("gui.color-selector.focus-item.gui-position.x"), config.getInt("gui.color-selector.focus-item.gui-position.y"), 1, 1);
 
         ItemStack currentChoice = Items.costumePiece(player, path, type, "&6Select &7a &3color &7to &9change");
 
@@ -82,18 +81,18 @@ public class CostumeColor extends JavaPlugin {
             }));
         }
 
-        a.addItem(new GuiItem(Items.guiItem(player, "gui_costumes_back-arrow"), event -> {
-            Autographs.getPlugin().getConfig().set(path.replace("_", ".")+"."+type.toLowerCase(), currentColor.name().substring(0, 1).toUpperCase() + currentColor.name().substring(1));
+        a.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.back-arrow"), event -> {
+            Autographs.getPlugin().getConfig().set(path+"."+type.toLowerCase(), currentColor.name().substring(0, 1).toUpperCase() + currentColor.name().substring(1));
             Autographs.getPlugin().saveConfig();
             ChestGui Details = CostumeDetail.create(player, path);
             player.closeInventory();
             Details.show(player);
         }), 0,0);
 
-        ItemStack hidden = new ItemStack(Material.valueOf(Config.getString("item", "gui_color-selector")));
+        ItemStack hidden = new ItemStack(Material.valueOf(config.getString("gui.color-selector.item")));
         ItemMeta meta = hidden.getItemMeta();
         meta.setDisplayName("Autographs By: Netpex");
-        meta.setCustomModelData(Config.getInt("model-data", "gui_color-selector"));
+        meta.setCustomModelData(config.getInt("gui.color-selector.model-data"));
         hidden.setItemMeta(meta);
         b.addItem(new GuiItem(hidden, event ->
                 event.setCancelled(true)), 0,0);

@@ -1,10 +1,10 @@
 package info.netpex.autographs.listeners;
 
 import info.netpex.autographs.Autographs;
-import info.netpex.autographs.utility.Config;
 import info.netpex.autographs.utility.PersistentData;
 import info.netpex.autographs.utility.Placeholders;
 import org.bukkit.Material;
+import org.bukkit.configuration.Configuration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class PlayerJoinEvent implements Listener {
 
     Autographs plugin = Autographs.getPlugin();
+    Configuration config = plugin.getConfig();
 
     @EventHandler
     public void onPlayerJoin(org.bukkit.event.player.PlayerJoinEvent e) {
@@ -25,15 +26,15 @@ public class PlayerJoinEvent implements Listener {
             String costume = PersistentData.get(player, "costume");
 
             if (!costume.equalsIgnoreCase("none")) {
-                player.sendMessage(Placeholders.translate(player, Config.getString("still-dressed", "options_responses")));
+                player.sendMessage(Placeholders.translate(player, config.getString("options.responses.still-dressed")));
             }
         } else {
             PersistentData.set(player, "costume", "none");
         }
 
-        ItemStack book = new ItemStack(Material.valueOf(Config.getString("item", "item")));
+        ItemStack book = new ItemStack(Material.valueOf(config.getString("item.item")));
         ItemMeta meta = book.getItemMeta();
-        meta.setCustomModelData(Config.getInt("model-data", "item"));
+        meta.setCustomModelData(config.getInt("item.model-data"));
 
         ArrayList<String> lore = new ArrayList<>();
         for (String s : plugin.getConfig().getStringList("item.lore")) {
@@ -43,8 +44,8 @@ public class PlayerJoinEvent implements Listener {
 
         book.setItemMeta(meta);
 
-        if (Config.getBool("forceItemSlot", "options")) {
-            player.getInventory().setItem(Config.getInt("force-slot", "item"), book);
+        if (config.getBoolean("options.forceItemSlot")) {
+            player.getInventory().setItem(config.getInt("item.force-slot"), book);
         } else {
             player.getInventory().addItem(book);
         }

@@ -1,24 +1,15 @@
 package info.netpex.autographs;
 
-import com.github.stefvanschie.inventoryframework.gui.GuiItem;
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
-import com.github.stefvanschie.inventoryframework.pane.PaginatedPane;
-import com.github.stefvanschie.inventoryframework.pane.StaticPane;
 import info.netpex.autographs.frames.CostumeDetail;
 import info.netpex.autographs.frames.Costumes;
-import info.netpex.autographs.utility.Config;
-import info.netpex.autographs.utility.Items;
 import info.netpex.autographs.utility.PersistentData;
 import info.netpex.autographs.utility.Placeholders;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -73,9 +64,29 @@ public class Commands implements CommandExecutor {
                                 Autographs.getPlugin().saveConfig();
                                 player.sendMessage(Placeholders.translate(player, "%prefix% &eDisplay-name &7for &r" + c + " &6updated &7to &r" + argsToOneString + "&7!"));
                                 if (args[2].equalsIgnoreCase("y")) {
-                                    ChestGui Details = CostumeDetail.create(player, "costumes_" + c);
+                                    ChestGui Details = CostumeDetail.create(player, "costumes." + c);
                                     player.closeInventory();
                                     Details.show(player);
+                                }
+                            }
+                        }
+                    }
+                } else if (args[0].equalsIgnoreCase("delete")) {
+                    Collection<String> costumesPath = Autographs.getPlugin().getConfig().getConfigurationSection("costumes").getKeys(false); //Iterable collection of costumes
+
+                    ArrayList<String> costumes = new ArrayList<String>(Arrays.asList()); //Empty array for costumes
+
+                    for (String c : costumesPath) {
+                        if (args[1].equalsIgnoreCase(c)) {
+                            if (args.length > 1) {
+                                System.out.println(args[2]);
+                                Autographs.getPlugin().getConfig().set("costumes." + c, null);
+                                Autographs.getPlugin().saveConfig();
+                                player.sendMessage(Placeholders.translate(player, "%prefix% &eCostume &r" + c + " &6was &asuccessfully &cDeleted&7!"));
+                                if (args[2].equalsIgnoreCase("y")) {
+                                    ChestGui gui = Costumes.create(player);
+                                    player.closeInventory();
+                                    gui.show(player);
                                 }
                             }
                         }
