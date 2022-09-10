@@ -25,7 +25,7 @@ public class CostumeDetail extends JavaPlugin {
 
     public static ChestGui create(Player player, String path) {
 
-        ChestGui gui = new ChestGui(6, "Costumes");
+        ChestGui gui = new ChestGui(6, "Costume");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         StaticPane details = new StaticPane(0, 0, 9, 5);
         Configuration config = Autographs.getPlugin().getConfig();
@@ -47,7 +47,7 @@ public class CostumeDetail extends JavaPlugin {
         rename.setItemMeta(metarename);
 
         ItemStack delete = new ItemStack(Material.BARRIER);
-        ItemMeta metadelete = rename.getItemMeta();
+        ItemMeta metadelete = delete.getItemMeta();
         metadelete.setDisplayName(Placeholders.translate(player, "&4&lDELETE"));
         ArrayList<String> loredelete = new ArrayList<>();
         loredelete.add(Placeholders.translate(player, "&6Click&7 to &cdelete &r"+config.getString(path+".name")));
@@ -56,22 +56,22 @@ public class CostumeDetail extends JavaPlugin {
         delete.setItemMeta(metadelete);
 
         details.addItem(new GuiItem(head, event -> event.setCancelled(true)), 2,1);
-        details.addItem(new GuiItem(Items.costumePiece(player, path, "CHESTPLATE", "&6Click &7to &9change "), event -> {
+        details.addItem(new GuiItem(Items.costumePiece(player, path, "CHESTPLATE", "&6Click &7to &9change ", false), event -> {
             ChestGui Details = CostumeColor.create(player, path, "CHESTPLATE");
             player.closeInventory();
             Details.show(player);
         }), 2,2);
-        details.addItem(new GuiItem(Items.costumePiece(player, path, "LEGGINGS", "&6Click &7to &9change "), event-> {
+        details.addItem(new GuiItem(Items.costumePiece(player, path, "LEGGINGS", "&6Click &7to &9change ", false), event-> {
             ChestGui Details = CostumeColor.create(player, path, "LEGGINGS");
             player.closeInventory();
             Details.show(player);
         }), 2,3);
-        details.addItem(new GuiItem(Items.costumePiece(player, path, "BOOTS", "&6Click &7to &9change "), event -> {
+        details.addItem(new GuiItem(Items.costumePiece(player, path, "BOOTS", "&6Click &7to &9change ", false), event -> {
             ChestGui Details = CostumeColor.create(player, path, "BOOTS");
             player.closeInventory();
             Details.show(player);
         }), 2,4);
-        details.addItem(new GuiItem(Items.guiItem(player, "worlds." + config.getString(path+".park")), event -> event.setCancelled(true)), 5,1);
+        details.addItem(new GuiItem(Items.guiItem(player, "worlds." + config.getString(path+".park"), false), event -> event.setCancelled(true)), 5,1);
         details.addItem(new GuiItem(rename, event -> {
             TextComponent msg = new TextComponent(Placeholders.translate(player, "&6Click &chere &7to &9rename &r"+config.getString(path+".name")+"&7!"));
             msg.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(Placeholders.translate(player, "&7/ag rename "+config.getString(path+".name")+" y <New name>")).create()));
@@ -90,23 +90,14 @@ public class CostumeDetail extends JavaPlugin {
         gui.addPane(details);
 
         StaticPane a =  new StaticPane(config.getInt("gui.costumes.back-arrow.gui-position.x"), config.getInt("gui.costumes.back-arrow.gui-position.y"), 1, 1);
-        StaticPane b = new StaticPane(config.getInt("gui.costumes.gui-position.x"), config.getInt("gui.costumes.gui-position.y"), 1, 1);
 
-        a.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.back-arrow"), event ->{
-            ChestGui g = Costumes.create(player);
+        a.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.back-arrow", false), event ->{
+            ChestGui g = CostumesFrame.create(player);
             player.closeInventory();
             g.show(player);
         }), 0,0);
 
-        ItemStack hidden = new ItemStack(Material.valueOf(config.getString("gui.costumes.item")));
-        ItemMeta meta = hidden.getItemMeta();
-        meta.setDisplayName("Autographs By: Netpex");
-        meta.setCustomModelData(config.getInt("gui.costumes.model-data"));
-        hidden.setItemMeta(meta);
-        b.addItem(new GuiItem(hidden, event ->
-                event.setCancelled(true)), 0,0);
         gui.addPane(a);
-        gui.addPane(b);
 
         return(gui);
     }

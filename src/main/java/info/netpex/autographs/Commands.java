@@ -2,7 +2,7 @@ package info.netpex.autographs;
 
 import com.github.stefvanschie.inventoryframework.gui.type.ChestGui;
 import info.netpex.autographs.frames.CostumeDetail;
-import info.netpex.autographs.frames.Costumes;
+import info.netpex.autographs.frames.CostumesFrame;
 import info.netpex.autographs.utility.PersistentData;
 import info.netpex.autographs.utility.Placeholders;
 import org.bukkit.Bukkit;
@@ -48,7 +48,7 @@ public class Commands implements CommandExecutor {
                         player.sendMessage(Placeholders.translate(player, "%prefix% Data retrieved for " + player.getName() + ": " + PersistentData.get(player, "Costume")));
                     }
                 } else if (args[0].equalsIgnoreCase("costumes")) {
-                    ChestGui gui = Costumes.create(player);
+                    ChestGui gui = CostumesFrame.create(player);
                     gui.show(player);
                 } else if (args[0].equalsIgnoreCase("rename")) {
                     Collection<String> costumesPath = Autographs.getPlugin().getConfig().getConfigurationSection("costumes").getKeys(false); //Iterable collection of costumes
@@ -84,7 +84,7 @@ public class Commands implements CommandExecutor {
                                 Autographs.getPlugin().saveConfig();
                                 player.sendMessage(Placeholders.translate(player, "%prefix% &eCostume &r" + c + " &6was &asuccessfully &cDeleted&7!"));
                                 if (args[2].equalsIgnoreCase("y")) {
-                                    ChestGui gui = Costumes.create(player);
+                                    ChestGui gui = CostumesFrame.create(player);
                                     player.closeInventory();
                                     gui.show(player);
                                 }

@@ -54,18 +54,12 @@ costumes:
 
 gui:
   costumes:
-    custom-frame: true #If you aren't sure what this means make it false.
-    item: "IRON_INGOT"
-    gui-position:
-      x: 4
-      y: 5
-    model-data: 1
     right-arrow:
       item: "IRON_INGOT"
       gui-position:
         x: 7
         y: 5
-      model-data: 2
+      model-data: 1
       title: "&6BACK"
       lore:
         - "&6Click &7to go &5back &7a &9page."
@@ -74,7 +68,7 @@ gui:
       gui-position:
         x: 8
         y: 5
-      model-data: 3
+      model-data: 2
       title: "&8NEXT"
       lore:
         - "&6Click &7to see the &2next &9page."
@@ -83,17 +77,26 @@ gui:
       gui-position:
         x: 0
         y: 5
-      model-data: 4
+      model-data: 3
       title: "&6Return"
       lore:
         - "&6Click &7to &4Return&7."
+    remove:
+      item: "BARRIER"
+      gui-position:
+        x: 1
+        y: 4
+      model-data: -1
+      title: "&6Return"
+      lore:
+        - "&6Click &7to &4Disable&7 your costume."
   color-selector:
     custom-frame: true #If you aren't sure what this means make it false.
     item: "IRON_INGOT"
     gui-position:
       x: 0
       y: 0
-    model-data: 5
+    model-data: 4
     focus-item:
       gui-position:
         x: 4
@@ -103,7 +106,7 @@ gui:
       gui-position:
         x: 0
         y: 1
-      model-data: 4
+      model-data: 3
       title: "&6Return"
       lore:
         - "&6Click &7to &4Return&7/&2Save&7."

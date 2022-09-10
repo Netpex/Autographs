@@ -1,5 +1,6 @@
 package info.netpex.autographs;
 
+import info.netpex.autographs.listeners.ItemBlockingEvents;
 import info.netpex.autographs.listeners.PlayerInteractEvent;
 import info.netpex.autographs.listeners.PlayerJoinEvent;
 import org.bukkit.Bukkit;
@@ -37,6 +38,7 @@ public final class Autographs extends JavaPlugin {
       // listeners
         this.getServer().getPluginManager().registerEvents(new PlayerJoinEvent(), this);
         this.getServer().getPluginManager().registerEvents(new PlayerInteractEvent(), this);
+        this.getServer().getPluginManager().registerEvents(new ItemBlockingEvents(), this);
     }
 
     public static Autographs getPlugin() {

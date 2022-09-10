@@ -35,7 +35,7 @@ public class CostumeColor extends JavaPlugin {
         StaticPane d = new StaticPane(8, 2, 1, 1);
         StaticPane e = new StaticPane(config.getInt("gui.color-selector.focus-item.gui-position.x"), config.getInt("gui.color-selector.focus-item.gui-position.y"), 1, 1);
 
-        ItemStack currentChoice = Items.costumePiece(player, path, type, "&6Select &7a &3color &7to &9change");
+        ItemStack currentChoice = Items.costumePiece(player, path, type, "&6Select &7a &3color &7to &9change", false);
 
         e.addItem(new GuiItem(currentChoice, event -> event.setCancelled(true)), 0,0);
 
@@ -71,6 +71,15 @@ public class CostumeColor extends JavaPlugin {
 
         OutlinePane selection = new OutlinePane(1, 1, 7, 2);
 
+        a.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.back-arrow", false), event -> {
+            Autographs.getPlugin().getConfig().set(path+"."+type.toLowerCase(), currentColor.name().substring(0, 1).toUpperCase() + currentColor.name().substring(1));
+            Autographs.getPlugin().saveConfig();
+            ChestGui Details = CostumeDetail.create(player, path);
+            player.closeInventory();
+            Details.show(player);
+        }), 0,0);
+
+
         for (Material color : palette) {
             selection.addItem(new GuiItem(new ItemStack(color), event -> {
                 currentColor = DyeColor.valueOf(color.name().split("_DYE")[0]);
@@ -80,14 +89,6 @@ public class CostumeColor extends JavaPlugin {
                 gui.update();
             }));
         }
-
-        a.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.back-arrow"), event -> {
-            Autographs.getPlugin().getConfig().set(path+"."+type.toLowerCase(), currentColor.name().substring(0, 1).toUpperCase() + currentColor.name().substring(1));
-            Autographs.getPlugin().saveConfig();
-            ChestGui Details = CostumeDetail.create(player, path);
-            player.closeInventory();
-            Details.show(player);
-        }), 0,0);
 
         ItemStack hidden = new ItemStack(Material.valueOf(config.getString("gui.color-selector.item")));
         ItemMeta meta = hidden.getItemMeta();
