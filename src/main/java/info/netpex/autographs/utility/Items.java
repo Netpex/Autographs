@@ -44,7 +44,7 @@ public class Items extends JavaPlugin {
         return(arrow);
     }
 
-    public static ItemStack costumeItem(Player player, String path, Boolean disable) {
+    public static ItemStack costumeItem(Player player, String path, Boolean disable, Boolean client) {
         ItemStack head;
         Configuration config = Autographs.getPlugin().getConfig();
         if (config.getBoolean("options.useHeadDataBase")) {
@@ -63,19 +63,22 @@ public class Items extends JavaPlugin {
         }
         ItemMeta meta = head.getItemMeta();
 
-        if (disable) {
-            PersistentDataContainer data = meta.getPersistentDataContainer();
-            data.set(new NamespacedKey(Autographs.getPlugin(), "block_interact"), PersistentDataType.STRING,  "true");
-        }
-
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         meta.setDisplayName(Placeholders.translate(player, config.getString(path+".name")));
         ArrayList<String> lore = new ArrayList<>();
         for (String s : Autographs.getPlugin().getConfig().getStringList(path.replace("_", ".")+".lore")) {
             lore.add(Placeholders.translate(player, s));
         }
-        lore.add(Placeholders.translate(player, "&aLeft &6click &7to &3toggle&7."));
-        lore.add(Placeholders.translate(player, "&cRight &6click &7to &3inspect&7."));
+        PersistentDataContainer data = meta.getPersistentDataContainer();
+        if (disable) {
+            data.set(new NamespacedKey(Autographs.getPlugin(), "block_interact"), PersistentDataType.STRING,  "true");
+        }
+       if (client) {
+           lore.add(Placeholders.translate(player, "&cLeft &6click &7to &3inspect&7."));
+       } else {
+           lore.add(Placeholders.translate(player, "&aLeft &6click &7to &3toggle&7."));
+           lore.add(Placeholders.translate(player, "&cRight &6click &7to &3inspect&7."));
+       }
         meta.setLore(lore);
         head.setItemMeta(meta);
 
@@ -89,10 +92,11 @@ public class Items extends JavaPlugin {
         lore.add(Placeholders.translate(player, l));
         LeatherArmorMeta meta = (LeatherArmorMeta) armor.getItemMeta();
         meta.setDisplayName(Placeholders.translate(player, type.substring(0, 1).toUpperCase() + type.substring(1)));
+        PersistentDataContainer data = meta.getPersistentDataContainer();
         if (disable) {
-            PersistentDataContainer data = meta.getPersistentDataContainer();
             data.set(new NamespacedKey(Autographs.getPlugin(), "block_interact"), PersistentDataType.STRING,  "true");
         }
+        data.set(new NamespacedKey(Autographs.getPlugin(), "auto_tool_type"), PersistentDataType.STRING,  "costume");
         meta.addItemFlags(ItemFlag.HIDE_DYE);
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         meta.setLore(lore);

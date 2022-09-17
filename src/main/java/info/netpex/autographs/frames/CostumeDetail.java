@@ -25,7 +25,7 @@ public class CostumeDetail extends JavaPlugin {
 
     public static ChestGui create(Player player, String path) {
 
-        ChestGui gui = new ChestGui(6, "Costume");
+        ChestGui gui = new ChestGui(6, "Costume - Details");
         gui.setOnGlobalClick(event -> event.setCancelled(true));
         StaticPane details = new StaticPane(0, 0, 9, 5);
         Configuration config = Autographs.getPlugin().getConfig();
@@ -55,22 +55,22 @@ public class CostumeDetail extends JavaPlugin {
         metadelete.setLore(loredelete);
         delete.setItemMeta(metadelete);
 
-        details.addItem(new GuiItem(head, event -> event.setCancelled(true)), 2,1);
+        details.addItem(new GuiItem(head, event -> event.setCancelled(true)), 3,1);
         details.addItem(new GuiItem(Items.costumePiece(player, path, "CHESTPLATE", "&6Click &7to &9change ", false), event -> {
             ChestGui Details = CostumeColor.create(player, path, "CHESTPLATE");
             player.closeInventory();
             Details.show(player);
-        }), 2,2);
+        }), 3,2);
         details.addItem(new GuiItem(Items.costumePiece(player, path, "LEGGINGS", "&6Click &7to &9change ", false), event-> {
             ChestGui Details = CostumeColor.create(player, path, "LEGGINGS");
             player.closeInventory();
             Details.show(player);
-        }), 2,3);
+        }), 3,3);
         details.addItem(new GuiItem(Items.costumePiece(player, path, "BOOTS", "&6Click &7to &9change ", false), event -> {
             ChestGui Details = CostumeColor.create(player, path, "BOOTS");
             player.closeInventory();
             Details.show(player);
-        }), 2,4);
+        }), 3,4);
         details.addItem(new GuiItem(Items.guiItem(player, "worlds." + config.getString(path+".park"), false), event -> event.setCancelled(true)), 5,1);
         details.addItem(new GuiItem(rename, event -> {
             TextComponent msg = new TextComponent(Placeholders.translate(player, "&6Click &chere &7to &9rename &r"+config.getString(path+".name")+"&7!"));
@@ -89,9 +89,9 @@ public class CostumeDetail extends JavaPlugin {
 
         gui.addPane(details);
 
-        StaticPane a =  new StaticPane(config.getInt("gui.costumes.back-arrow.gui-position.x"), config.getInt("gui.costumes.back-arrow.gui-position.y"), 1, 1);
+        StaticPane a =  new StaticPane(0, 5, 9, 1);
 
-        a.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.back-arrow", false), event ->{
+        a.addItem(new GuiItem(Items.guiItem(player, "gui.back-arrow", false), event ->{
             ChestGui g = CostumesFrame.create(player);
             player.closeInventory();
             g.show(player);

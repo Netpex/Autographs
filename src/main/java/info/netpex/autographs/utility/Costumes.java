@@ -37,6 +37,17 @@ public class Costumes extends JavaPlugin {
             head = new ItemStack(Material.valueOf(config.getString(path+".gui-item")));
         }
 
+        ItemMeta meta = head.getItemMeta();
+        meta.setDisplayName(Placeholders.translate(player, config.getString(path+".name")));
+        ArrayList<String> lore = new ArrayList<>();
+        lore.add(Placeholders.translate(player, "&6This &7is a part of "+ config.getString(path+".name")));
+        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        PersistentDataContainer d = meta.getPersistentDataContainer();
+        d.set(new NamespacedKey(Autographs.getPlugin(), "block_interact"), PersistentDataType.STRING,  "true");
+        d.set(new NamespacedKey(Autographs.getPlugin(), "auto_tool_type"), PersistentDataType.STRING,  "costume");
+        meta.setLore(lore);
+        head.setItemMeta(meta);
+
         player.getInventory().setChestplate(chest);
         player.getInventory().setLeggings(legs);
         player.getInventory().setBoots(boots);
@@ -50,18 +61,9 @@ public class Costumes extends JavaPlugin {
         metadelete.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         PersistentDataContainer data = metadelete.getPersistentDataContainer();
         data.set(new NamespacedKey(Autographs.getPlugin(), "block_interact"), PersistentDataType.STRING,  "true");
+        data.set(new NamespacedKey(Autographs.getPlugin(), "auto_tool_type"), PersistentDataType.STRING,  "disable_costume");
         metadelete.setLore(loredelete);
         delete.setItemMeta(metadelete);
-
-        ItemMeta meta = head.getItemMeta();
-        meta.setDisplayName(Placeholders.translate(player, config.getString(path+".name")));
-        ArrayList<String> lore = new ArrayList<>();
-        lore.add(Placeholders.translate(player, "&6This &7is a part of "+ config.getString(path+".name")));
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        PersistentDataContainer d = meta.getPersistentDataContainer();
-        d.set(new NamespacedKey(Autographs.getPlugin(), "block_interact"), PersistentDataType.STRING,  "true");
-        meta.setLore(lore);
-        head.setItemMeta(meta);
 
         foundSlot = false;
         for (int size = 0; size<player.getInventory().getSize(); size++) {

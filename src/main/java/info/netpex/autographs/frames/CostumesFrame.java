@@ -36,7 +36,7 @@ public class CostumesFrame extends JavaPlugin {
         ArrayList<ItemStack> costumes = new ArrayList<ItemStack>(Arrays.asList());
 
         for (String c : costumesPath) {
-            ItemStack item = Items.costumeItem(player, "costumes." + c, false);
+            ItemStack item = Items.costumeItem(player, "costumes." + c, false, true);
             if (item != null) {
             ItemMeta meta = item.getItemMeta();
             PersistentDataContainer data = meta.getPersistentDataContainer();
@@ -63,49 +63,61 @@ public class CostumesFrame extends JavaPlugin {
 
         gui.addPane(pages);
 
-        StaticPane a = new StaticPane(config.getInt("gui.costumes.left-arrow.gui-position.x"), config.getInt("gui.costumes.left-arrow.gui-position.y"), 1, 1);
-        StaticPane b = new StaticPane(config.getInt("gui.costumes.right-arrow.gui-position.x"), config.getInt("gui.costumes.right-arrow.gui-position.y"), 1, 1);
-        StaticPane c = new StaticPane(config.getInt("gui.costumes.back-arrow.gui-position.x"), config.getInt("gui.costumes.back-arrow.gui-position.y"), 1, 1);
-        StaticPane d = new StaticPane(config.getInt("gui.costumes.remove.gui-position.x"), config.getInt("gui.costumes.remove-position.y"), 1, 1);
-        a.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.left-arrow", false),event -> {
+        StaticPane utility = new StaticPane(0, 5, 9, 1);
+        utility.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.left-arrow", false),event -> {
             if (pages.getPage() > 0) {
                 pages.setPage(pages.getPage() - 1);
 
                 gui.update();
             }
-        }), 0,0);
+        }), 8,0);
 
-        b.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.right-arrow", false), event -> {
+        utility.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.right-arrow", false), event -> {
             if (pages.getPage() < pages.getPages() - 1) {
                 pages.setPage(pages.getPage() + 1);
 
                 gui.update();
             }
-        }), 0,0);
+        }), 7,0);
 
-        c.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.back-arrow", false), event ->
+        utility.addItem(new GuiItem(Items.guiItem(player, "gui.back-arrow", false), event ->
                 event.getWhoClicked().closeInventory()), 0,0);
 
-        d.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.remove", false), event ->{
+        utility.addItem(new GuiItem(Items.guiItem(player, "gui.costumes.remove", false), event ->{
             if (PersistentData.has(player, "costume")) {
                 String costume = PersistentData.get(player, "costume");
                 if (!costume.equalsIgnoreCase("none")) {
-                    player.getEquipment().setHelmet(new ItemStack(Material.AIR));
-                    player.getEquipment().setChestplate(new ItemStack(Material.AIR));
-                    player.getEquipment().setLeggings(new ItemStack(Material.AIR));
-                    player.getEquipment().setBoots(new ItemStack(Material.AIR));
-                    player.getInventory().setItem(8, new ItemStack(Material.AIR));
+                    for (int size = 0; size<player.getInventory().getSize(); size++) {
+                        ItemStack i = player.getInventory().getItem(size);
+                        if (i != null && i.getType() != Material.AIR) {
+                            ItemMeta meta = i.getItemMeta();
+                            if (meta.getPersistentDataContainer().has(new NamespacedKey(Autographs.getPlugin(), "auto_tool_type"), PersistentDataType.STRING)) {
+                                if (meta.getPersistentDataContainer().has(new NamespacedKey(Autographs.getPlugin(), "auto_tool_type"), PersistentDataType.STRING)) {
+                                    if (meta.getPersistentDataContainer().get(new NamespacedKey(Autographs.getPlugin(), "auto_tool_type"), PersistentDataType.STRING).equalsIgnoreCase("disable_costume")) {
+                                        player.getInventory().setItem(size, new ItemStack(Material.AIR));
+                                    } else if (meta.getPersistentDataContainer().get(new NamespacedKey(Autographs.getPlugin(), "auto_tool_type"), PersistentDataType.STRING).equalsIgnoreCase("costume")) {
+                                        player.getInventory().setItem(size, new ItemStack(Material.AIR));
+                                        if (size == 39) {
+                                            player.getInventory().setHelmet(new ItemStack(Material.AIR));
+                                        } else if (size == 38) {
+                                            player.getInventory().setChestplate(new ItemStack(Material.AIR));
+                                        } else if (size == 37) {
+                                            player.getInventory().setLeggings(new ItemStack(Material.AIR));
+                                        } else if (size == 36) {
+                                            player.getInventory().setBoots(new ItemStack(Material.AIR));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     PersistentData.set(player, "costume", "none");
                     player.sendMessage(Placeholders.translate(player, "%prefix% &6Costume " + config.getString("costumes." + PersistentData.get(player, "costume") + ".name") + " &7was &cdisabled&7!"));
                 }
             }
-        }), 0,0);
-
-        gui.addPane(a);
-        gui.addPane(b);
-        gui.addPane(c);
-        gui.addPane(d);
+        }), 1,0);
+        gui.addPane(utility);
 
         return(gui);
     }

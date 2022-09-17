@@ -14,6 +14,20 @@ options:
     signed: "%prefix% &fCongrats!  %charcter% &fsigned your %prefix% &bBook&f!"
     already-signed: "%prefix% &fHey!  %charcter% &fhas already signed your %prefix% &bBook&f!"
 
+#MySQL
+database:
+  host: ""
+  port: ""
+  database: ""
+  username: ""
+  password: ""
+
+  cacheRefresh: 300 #Seconds (5 Mins)
+  min-connections: 1
+  max-connections: 1
+  connection-timeout: 1
+  idle-timeout: 1
+  keepaliveTime: 1
 
 #Autograph Item
 item:
@@ -53,39 +67,27 @@ costumes:
       - "&fYour pal, Mickey Mouse!"
 
 gui:
+  back-arrow:
+    item: "IRON_INGOT"
+    model-data: 3
+    title: "&6Return"
+    lore:
+      - "&6Click &7to &4Return&7."
   costumes:
     right-arrow:
       item: "IRON_INGOT"
-      gui-position:
-        x: 7
-        y: 5
       model-data: 1
       title: "&6BACK"
       lore:
         - "&6Click &7to go &5back &7a &9page."
     left-arrow:
       item: "IRON_INGOT"
-      gui-position:
-        x: 8
-        y: 5
       model-data: 2
       title: "&8NEXT"
       lore:
         - "&6Click &7to see the &2next &9page."
-    back-arrow:
-      item: "IRON_INGOT"
-      gui-position:
-        x: 0
-        y: 5
-      model-data: 3
-      title: "&6Return"
-      lore:
-        - "&6Click &7to &4Return&7."
     remove:
       item: "BARRIER"
-      gui-position:
-        x: 1
-        y: 4
       model-data: -1
       title: "&6Return"
       lore:
@@ -93,20 +95,4 @@ gui:
   color-selector:
     custom-frame: true #If you aren't sure what this means make it false.
     item: "IRON_INGOT"
-    gui-position:
-      x: 0
-      y: 0
     model-data: 4
-    focus-item:
-      gui-position:
-        x: 4
-        y: 0
-    back-arrow:
-      item: "IRON_INGOT"
-      gui-position:
-        x: 0
-        y: 1
-      model-data: 3
-      title: "&6Return"
-      lore:
-        - "&6Click &7to &4Return&7/&2Save&7."
